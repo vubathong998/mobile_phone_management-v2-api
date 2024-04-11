@@ -1,0 +1,80 @@
+import * as express from 'express';
+import AccountSchema from '~/models/schemas/AccountSchema';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { baseResponseError, baseResponseSuccess } from '~/util/baseResponse';
+import { STATUS_CODE } from '~/constants/statusCode';
+import { LoginResponse } from '~/models/type/Account/AccountResponse';
+import { getLine } from '~/util/getLine';
+
+class AccountController {
+    async login(req: express.Request, res: express.Response) {
+        try {
+            const user = await AccountSchema.findOne({
+                username: req.body.username
+            });
+            if (user?.password && process.env.JWT_SECRET) {
+                const match = await bcrypt.compare(req.body.password, user.password as string);
+                if (match) {
+                    const token = jwt.sign({ user: user }, process.env.JWT_SECRET, {
+                        expiresIn: '5h'
+                    });
+
+                    baseResponseSuccess<LoginResponse>({ req, res, data: { token }, getLine: getLine(), isLog: true });
+                } else {
+                    baseResponseError({ res, code: STATUS_CODE.IncorrectAccount, getLine: getLine() });
+                }
+            } else {
+                baseResponseError({
+                    res,
+                    code: STATUS_CODE.InternalServerError,
+                    customLog: { EnvJWT_SECRET: process.env.JWT_SECRET },
+                    getLine: getLine()
+                });
+            }
+        } catch (error) {
+            baseResponseError({ res, code: STATUS_CODE.InternalServerError, catchError: error, getLine: getLine() });
+        }
+    }
+    async register(req: express.Request, res: express.Response) {
+        try {
+            if (process.env.SAIL_ROUND && process.env.JWT_SECRET) {
+                const emailRegex = /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+                if (emailRegex.test(req.body.email)) {
+                    const salt = bcrypt.genSaltSync(parseInt(process.env.SAIL_ROUND));
+                    const hash = bcrypt.hashSync(req.body.password, salt);
+                    const data = {
+                        ...req.body,
+                        email: req.body.email,
+                        password: hash,
+                        permission: ''
+                    };
+                    const user = await AccountSchema.create(data);
+
+                    const token = jwt.sign({ user: user }, process.env.JWT_SECRET, {
+                        expiresIn: '5h'
+                    });
+
+                    baseResponseSuccess<LoginResponse>({
+                        res,
+                        data: { token },
+                        getLine: getLine(),
+                        isLog: true
+                    });
+                } else {
+                    baseResponseError({ res, code: STATUS_CODE.InternalServerError, getLine: getLine() });
+                }
+            } else {
+                baseResponseError({
+                    res,
+                    code: STATUS_CODE.InternalServerError,
+                    customLog: { EnvSAIL_ROUND: process.env.SAIL_ROUND, EnvJWT_SECRET: process.env.JWT_SECRET }
+                });
+            }
+        } catch (error) {
+            baseResponseError({ res, code: STATUS_CODE.InternalServerError, catchError: error, getLine: getLine() });
+        }
+    }
+}
+
+export default AccountController;

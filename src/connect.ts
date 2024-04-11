@@ -1,11 +1,14 @@
+import { logger } from './loggerConfig';
 import mongoose from 'mongoose';
 
 const connectMongoDB = async (uri: string) => {
     try {
         await mongoose.connect(uri);
-        console.log('mongoose is connected');
+        logger.info('mongoose is connected');
     } catch (error) {
-        console.log(error);
+        logger.error(`connectMongoDB:
+        uri: {uri}
+        catch: ${error}`);
     }
 };
 
