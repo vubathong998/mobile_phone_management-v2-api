@@ -16,3 +16,5 @@ export enum STATUS_CODE {
     NoPermission = 501,
     IncorrectAccount = 504
 }
+
+// export const STATUS_CODE_DISPLAYED_NAME: Array<STATUS_CODE> = [STATUS_CODE.Success, STATUS_CODE.Created];

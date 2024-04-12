@@ -22,18 +22,25 @@ class AccountController {
 
                     baseResponseSuccess<LoginResponse>({ req, res, data: { token }, getLine: getLine(), isLog: true });
                 } else {
-                    baseResponseError({ res, code: STATUS_CODE.IncorrectAccount, getLine: getLine() });
+                    baseResponseError({ res, req, code: STATUS_CODE.IncorrectAccount, getLine: getLine() });
                 }
             } else {
                 baseResponseError({
                     res,
+                    req,
                     code: STATUS_CODE.InternalServerError,
                     customLog: { EnvJWT_SECRET: process.env.JWT_SECRET },
                     getLine: getLine()
                 });
             }
         } catch (error) {
-            baseResponseError({ res, code: STATUS_CODE.InternalServerError, catchError: error, getLine: getLine() });
+            baseResponseError({
+                res,
+                req,
+                code: STATUS_CODE.InternalServerError,
+                catchError: error,
+                getLine: getLine()
+            });
         }
     }
     async register(req: express.Request, res: express.Response) {
@@ -62,17 +69,25 @@ class AccountController {
                         isLog: true
                     });
                 } else {
-                    baseResponseError({ res, code: STATUS_CODE.InternalServerError, getLine: getLine() });
+                    baseResponseError({ res, req, code: STATUS_CODE.InternalServerError, getLine: getLine() });
                 }
             } else {
                 baseResponseError({
+                    getLine: getLine(),
                     res,
+                    req,
                     code: STATUS_CODE.InternalServerError,
                     customLog: { EnvSAIL_ROUND: process.env.SAIL_ROUND, EnvJWT_SECRET: process.env.JWT_SECRET }
                 });
             }
         } catch (error) {
-            baseResponseError({ res, code: STATUS_CODE.InternalServerError, catchError: error, getLine: getLine() });
+            baseResponseError({
+                res,
+                req,
+                code: STATUS_CODE.InternalServerError,
+                catchError: error,
+                getLine: getLine()
+            });
         }
     }
 }

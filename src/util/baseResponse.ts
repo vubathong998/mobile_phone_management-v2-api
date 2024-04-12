@@ -1,11 +1,11 @@
 import * as express from 'express';
-import { BaseResponseModel } from '~/models/type/BaseModel.js';
+import { baseResponseModel } from '~/models/type/BaseType/BaseModel.js';
 import { STATUS_CODE } from '~/constants/statusCode';
 import { logger } from '~/loggerConfig';
-import { BaseResponseErrorType, BaseResponseSuccessType } from '~/models/type/BaseResponse';
-import { stringifyAtCircularCase } from './stringifyAtCircularCase';
+import { baseResponseErrorType, baseResponseSuccessType } from '~/models/type/BaseType/BaseResponse';
+// import { stringifyAtCircularCase } from './stringifyAtCircularCase';
 
-const baseResponseSuccess = <T>(param: BaseResponseSuccessType<T>) => {
+const baseResponseSuccess = <T>(param: baseResponseSuccessType<T>) => {
     const { code, data, res, req, message, isLog, customLog, getLine } = param;
     if (isLog) {
         logger.info(
@@ -41,15 +41,15 @@ const baseResponseSuccess = <T>(param: BaseResponseSuccessType<T>) => {
             // })
         );
     }
-    const response: BaseResponseModel<T> = {
+    const response: baseResponseModel<T> = {
         code: code || STATUS_CODE.Success,
-        message,
+        message: message || STATUS_CODE[code || STATUS_CODE.Success],
         data
     };
     res.json(response);
 };
 
-const baseResponseError = (param: BaseResponseErrorType) => {
+const baseResponseError = (param: baseResponseErrorType) => {
     const { code, message, res, customLog, req, getLine, catchError } = param;
     logger.error(
         JSON.stringify({
@@ -58,8 +58,8 @@ const baseResponseError = (param: BaseResponseErrorType) => {
                 body: { ...req?.body },
                 token: req?.headers['authorization']
             },
-            customLog,
-            catchError
+            catchError,
+            customLog
         })
         // stringifyAtCircularCase({
         //     getLine,
@@ -71,9 +71,10 @@ const baseResponseError = (param: BaseResponseErrorType) => {
         //     catchError
         // })
     );
-    const response: BaseResponseModel<null> = {
+
+    const response: baseResponseModel<null> = {
         code: code || STATUS_CODE.BadRequest,
-        message,
+        message: message || STATUS_CODE[code || STATUS_CODE.BadRequest],
         data: null
     };
     res.json(response);

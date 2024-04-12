@@ -39,6 +39,8 @@
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.20.2",
         "express": "^4.19.2",
+        "joi": "^17.12.3",
+        "joi-typescript-validator": "^0.2.0",
         "jsonwebtoken": "^9.0.2",
         "log4js": "^6.9.1",
         "log4ts": "^0.4.2",

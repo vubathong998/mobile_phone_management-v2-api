@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { STATUS_CODE } from '~/constants/statusCode';
 
-export type BaseResponseSuccessType<T> = {
+export type baseResponseSuccessType<T> = {
     data: T;
     res: express.Response;
     req?: express.Request;
@@ -12,12 +12,19 @@ export type BaseResponseSuccessType<T> = {
     getLine?: any;
 };
 
-export type BaseResponseErrorType = {
+export type baseResponseErrorType = {
     res: express.Response;
-    req?: express.Request;
+    req: express.Request;
     message?: string;
     code?: STATUS_CODE;
     customLog?: any;
-    getLine?: any;
+    getLine: any;
     catchError?: string | unknown;
+};
+
+export type paginationDataResponse<T = any> = {
+    page: number;
+    limit: number;
+    result: T;
+    total: number;
 };
