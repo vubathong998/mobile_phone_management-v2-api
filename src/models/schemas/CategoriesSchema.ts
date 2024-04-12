@@ -1,11 +1,10 @@
 import mongoose from 'mongoose';
-import { CategoriesSchemaModel } from '../type/Categories/CategoriesModel';
 import { BaseSchema } from './BaseSchema';
-// import { BaseSchema } from './BaseModel';
+import { CategoriesCreateRequest } from '../type/Categories/CategoriesRequest';
 
 const { Schema } = mongoose;
 
-const CategoriesSchema = new Schema({
+const CategoriesSchema = new Schema<CategoriesCreateRequest>({
     categoryName: {
         type: String,
         require: true,

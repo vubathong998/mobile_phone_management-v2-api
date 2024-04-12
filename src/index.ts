@@ -1,7 +1,7 @@
 import { logger } from './loggerConfig';
 import bodyParser from 'body-parser';
 import express from 'express';
-import connectMongoDB from './connect';
+import connectMongoDB from './connectMongoose';
 import 'dotenv/config';
 import router from './routes';
 

@@ -1,11 +1,9 @@
 import mongoose from 'mongoose';
-import { CategoriesSchemaModel } from '../type/Categories/CategoriesModel';
-import { baseInfoCreateModel, baseInfoModel, baseInfoUpdateModel } from '../type/BaseType/BaseModel';
-// import { BaseSchema } from './BaseModel';
+import { baseInfoModel } from '../type/BaseType/BaseModel';
 
 const { Schema } = mongoose;
 
-const BaseSchema = new Schema({
+const BaseSchema = new Schema<baseInfoModel>({
     createdByDate: {
         type: Date
     },

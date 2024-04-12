@@ -1,6 +1,5 @@
 import * as core from 'express-serve-static-core';
 import routeAccount from './account';
-import CategoriesController from '~/controller/CategoriesController';
 import routeCategories from './categories';
 
 export default function router(app: core.Express) {
