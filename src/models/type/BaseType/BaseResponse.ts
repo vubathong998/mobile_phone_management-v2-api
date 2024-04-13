@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { STATUS_CODE } from '~/constants/statusCode';
+import { STATUS_CODE } from '~/Infrastructure/constants/statusCode';
 
 export type baseResponseSuccessType<T> = {
     data: T;

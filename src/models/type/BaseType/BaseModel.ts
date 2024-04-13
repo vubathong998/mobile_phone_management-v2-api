@@ -1,4 +1,4 @@
-import { STATUS_CODE } from '~/constants/statusCode';
+import { STATUS_CODE } from '~/Infrastructure/constants/statusCode';
 
 export type baseResponseModel<T> = {
     code: STATUS_CODE;

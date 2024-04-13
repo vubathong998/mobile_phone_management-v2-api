@@ -2,12 +2,12 @@ import * as express from 'express';
 import * as core from 'express-serve-static-core';
 import CategoriesSchema from '~/models/schemas/CategoriesSchema';
 import { BaseGetByPageRequest } from '~/models/type/BaseType/BaseRequest';
-import { baseResponseError, baseResponseSuccess } from '~/util/baseResponse';
+import { baseResponseError, baseResponseSuccess } from '~/Infrastructure/utilities/baseResponse';
 import { paginationDataResponse } from '~/models/type/BaseType/BaseResponse';
 import { CategoriesCreateRequest } from '~/models/type/Categories/CategoriesRequest';
-import { getLine } from '~/util/getLine';
+import { getLine } from '~/Infrastructure/utilities/getLine';
 import { CategoriesCreateModel, CategoriesSchemaModel } from '~/models/type/Categories/CategoriesModel';
-import { createInfo } from '~/util/createInfo';
+import { createInfo } from '~/Infrastructure/utilities/createInfo';
 
 class CategoriesController {
     async getByPage(req: express.Request<core.ParamsDictionary, any, BaseGetByPageRequest>, res: express.Response) {

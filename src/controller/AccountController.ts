@@ -2,10 +2,10 @@ import * as express from 'express';
 import AccountSchema from '~/models/schemas/AccountSchema';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { baseResponseError, baseResponseSuccess } from '~/util/baseResponse';
-import { STATUS_CODE } from '~/constants/statusCode';
+import { baseResponseError, baseResponseSuccess } from '~/Infrastructure/utilities/baseResponse';
+import { STATUS_CODE } from '~/Infrastructure/constants/statusCode';
 import { LoginResponse } from '~/models/type/Account/AccountResponse';
-import { getLine } from '~/util/getLine';
+import { getLine } from '~/Infrastructure/utilities/getLine';
 
 class AccountController {
     async login(req: express.Request, res: express.Response) {

@@ -1,9 +1,9 @@
 import * as express from 'express';
 import jwt from 'jsonwebtoken';
-import { STATUS_CODE } from '~/constants/statusCode';
-import { baseResponseError } from '~/util/baseResponse';
-import { PERMISSION } from '~/constants/permission';
-import { getLine } from '~/util/getLine';
+import { STATUS_CODE } from '~/Infrastructure/constants/statusCode';
+import { baseResponseError } from '~/Infrastructure/utilities/baseResponse';
+import { PERMISSION } from '~/Infrastructure/constants/permission';
+import { getLine } from '~/Infrastructure/utilities/getLine';
 
 export default function authorization(role: PERMISSION) {
     return (req: express.Request, res: express.Response, next: express.NextFunction) => {

@@ -1,6 +1,5 @@
-import * as express from 'express';
 import { baseResponseModel } from '~/models/type/BaseType/BaseModel.js';
-import { STATUS_CODE } from '~/constants/statusCode';
+import { STATUS_CODE } from '~/Infrastructure/constants/statusCode';
 import { logger } from '~/loggerConfig';
 import { baseResponseErrorType, baseResponseSuccessType } from '~/models/type/BaseType/BaseResponse';
 // import { stringifyAtCircularCase } from './stringifyAtCircularCase';
@@ -49,8 +48,17 @@ const baseResponseSuccess = <T>(param: baseResponseSuccessType<T>) => {
     res.json(response);
 };
 
+type catchErrorType = {
+    errorResponse: { index: number; code: number; errmsg: string; keyPattern: object; keyValue: object };
+    index: number;
+    code: number;
+    keyPattern: object;
+    keyValue: object;
+};
+
 const baseResponseError = (param: baseResponseErrorType) => {
     const { code, message, res, customLog, req, getLine, catchError } = param;
+    const catchErrorClone: catchErrorType = JSON.parse(JSON.stringify(catchError));
     logger.error(
         JSON.stringify({
             getLine,
@@ -58,7 +66,7 @@ const baseResponseError = (param: baseResponseErrorType) => {
                 body: { ...req?.body },
                 token: req?.headers['authorization']
             },
-            catchError,
+            catchError: catchError,
             customLog
         })
         // stringifyAtCircularCase({
@@ -67,14 +75,19 @@ const baseResponseError = (param: baseResponseErrorType) => {
         //         body: { ...req?.body },
         //         token: req?.headers['authorization']
         //     },
-        //     customLog,
-        //     catchError
+        //     catchError: catchError,
+        //     customLog
         // })
     );
 
+    let messageResponse = '';
+    if (message) messageResponse = message;
+    else if (catchErrorClone?.code === 11000) messageResponse = catchErrorClone?.errorResponse?.errmsg;
+    if (!messageResponse) messageResponse = STATUS_CODE[code || STATUS_CODE.BadRequest];
+
     const response: baseResponseModel<null> = {
         code: code || STATUS_CODE.BadRequest,
-        message: message || STATUS_CODE[code || STATUS_CODE.BadRequest],
+        message: messageResponse,
         data: null
     };
     res.json(response);
