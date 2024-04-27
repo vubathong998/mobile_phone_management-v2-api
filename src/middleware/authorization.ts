@@ -26,7 +26,7 @@ export default function authorization(role: PERMISSION) {
                 getLine: getLine(),
                 res,
                 req,
-                code: STATUS_CODE.NoPermission
+                code: STATUS_CODE.Forbidden
             });
         }
     };

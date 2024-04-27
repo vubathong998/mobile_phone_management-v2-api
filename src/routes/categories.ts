@@ -2,6 +2,7 @@ import express from 'express';
 import { PERMISSION } from '~/Infrastructure/constants/permission';
 import {
     categoriesCreateValidation,
+    categoriesDeleteValidation,
     categoriesGetByPageValidation
 } from '~/Infrastructure/validation/categoriesValidation';
 import CategoriesController from '~/controller/CategoriesController';
@@ -25,6 +26,13 @@ routeCategories.post(
     authorization(PERMISSION.CategoryCreate),
     validation(categoriesCreateValidation),
     categoriesController.create
+);
+routeCategories.delete(
+    '/delete/:id',
+    authentication,
+    authorization(PERMISSION.CategoryDelete),
+    validation(categoriesDeleteValidation),
+    categoriesController.delete
 );
 // routeCategories.put('/:id',authentication, categoriesController.update);
 export default routeCategories;

@@ -22,7 +22,13 @@ class AccountController {
 
                     baseResponseSuccess<LoginResponse>({ req, res, data: { token }, getLine: getLine(), isLog: true });
                 } else {
-                    baseResponseError({ res, req, code: STATUS_CODE.IncorrectAccount, getLine: getLine() });
+                    baseResponseError({
+                        res,
+                        req,
+                        code: STATUS_CODE.NotFound,
+                        getLine: getLine(),
+                        message: 'username or password incorrect'
+                    });
                 }
             } else {
                 baseResponseError({
@@ -37,9 +43,10 @@ class AccountController {
             baseResponseError({
                 res,
                 req,
-                code: STATUS_CODE.InternalServerError,
+                code: STATUS_CODE.NotFound,
                 catchError: error,
-                getLine: getLine()
+                getLine: getLine(),
+                message: 'username or password incorrect'
             });
         }
     }

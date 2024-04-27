@@ -4,7 +4,7 @@ import CategoriesSchema from '~/models/schemas/CategoriesSchema';
 import { BaseGetByPageRequest } from '~/models/type/BaseType/BaseRequest';
 import { baseResponseError, baseResponseSuccess } from '~/Infrastructure/utilities/baseResponse';
 import { paginationDataResponse } from '~/models/type/BaseType/BaseResponse';
-import { CategoriesCreateRequest } from '~/models/type/Categories/CategoriesRequest';
+import { CategoriesCreateRequest, categoriesDeleteRequest } from '~/models/type/Categories/CategoriesRequest';
 import { getLine } from '~/Infrastructure/utilities/getLine';
 import { CategoriesCreateModel, CategoriesSchemaModel } from '~/models/type/Categories/CategoriesModel';
 import { createInfo } from '~/Infrastructure/utilities/createInfo';
@@ -74,6 +74,24 @@ class CategoriesController {
                 req,
                 res,
                 catchError
+            });
+        }
+    }
+    async delete(
+        req: express.Request<core.ParamsDictionary, any, categoriesDeleteRequest>,
+        res: express.Response<any>
+    ) {
+        try {
+            const data = await CategoriesSchema.findByIdAndDelete(req.params.id);
+            baseResponseSuccess({
+                data,
+                res: res
+            });
+        } catch (error) {
+            baseResponseError({
+                getLine: getLine(),
+                req,
+                res
             });
         }
     }

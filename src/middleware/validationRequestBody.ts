@@ -11,7 +11,7 @@ export default function validation<T>(schema?: SchemaMap<T>) {
             next();
         } catch (catchError) {
             baseResponseError({
-                getLine: getLine() + 'validation',
+                getLine: getLine() + ' (validation)',
                 res,
                 req,
                 catchError,

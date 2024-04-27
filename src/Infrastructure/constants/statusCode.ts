@@ -12,9 +12,9 @@ export enum STATUS_CODE {
     NotFound = 404,
     MethodNotAllowed = 405,
     // PaymentRequired = 406,
-    InternalServerError = 500,
-    NoPermission = 501,
-    IncorrectAccount = 504
+    InternalServerError = 500
+    // NoPermission = 501,
+    // IncorrectAccount = 504
 }
 
 // export const STATUS_CODE_DISPLAYED_NAME: Array<STATUS_CODE> = [STATUS_CODE.Success, STATUS_CODE.Created];

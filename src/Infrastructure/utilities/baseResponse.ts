@@ -45,7 +45,7 @@ const baseResponseSuccess = <T>(param: baseResponseSuccessType<T>) => {
         message: message || STATUS_CODE[code || STATUS_CODE.Success],
         data
     };
-    res.json(response);
+    res.status(code || STATUS_CODE.Success).json(response);
 };
 
 type catchErrorType = {
@@ -90,7 +90,7 @@ const baseResponseError = (param: baseResponseErrorType) => {
         message: messageResponse,
         data: null
     };
-    res.json(response);
+    res.status(code || STATUS_CODE.BadRequest).json(response);
 };
 
 export { baseResponseSuccess, baseResponseError };
