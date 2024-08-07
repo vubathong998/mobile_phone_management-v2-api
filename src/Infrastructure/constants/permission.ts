@@ -3,5 +3,9 @@ export enum PERMISSION {
     Category = 'category',
     CategoryUpdate = 'categoryUpdate',
     CategoryCreate = 'categoryCreate',
-    CategoryDelete = 'categoryDelete'
+    CategoryDelete = 'categoryDelete',
+    Phone = 'phone',
+    PhoneUpdate = 'phoneUpdate',
+    PhoneCreate = 'phoneCreate',
+    PhoneDelete = 'phoneDelete'
 }
