@@ -26,10 +26,39 @@ class PhonesController {
                 keyword = body.keyword;
             }
 
-            const data = await PhonesSchema.find({ ...req.query, name: new RegExp(keyword, 'i') })
-                .limit(Number(limit))
-                .skip((page - 1) * limit)
-                .sort();
+            // const data = await PhonesSchema.find({ ...req.query, name: new RegExp(keyword, 'i') })
+            //     .limit(Number(limit))
+            //     .skip((page - 1) * limit)
+            //     .sort()
+            //     .populate('categoryId');
+
+            const data = await PhonesSchema.aggregate([
+                {
+                    $match: { ...req.query, name: new RegExp(keyword, 'i') }
+                },
+                { $sort: { createdByDate: -1 } },
+                { $skip: (page - 1) * limit },
+                { $limit: Number(limit) },
+                {
+                    $lookup: {
+                        from: 'categories',
+                        localField: 'categoryId',
+                        foreignField: 'id',
+                        as: 'categoryInfo'
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$categoryInfo',
+                        preserveNullAndEmptyArrays: true
+                    }
+                }
+                // {
+                //     $addFields: {
+                //         categoryName: '$categoryInfo.categoryName'
+                //     }
+                // }
+            ]);
 
             const total = await PhonesSchema.countDocuments(req.query);
 
