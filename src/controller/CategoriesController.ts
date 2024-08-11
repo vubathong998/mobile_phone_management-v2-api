@@ -29,7 +29,7 @@ class CategoriesController {
             const data = await CategoriesSchema.find({ ...req.query, categoryName: new RegExp(keyword, 'i') })
                 .limit(Number(limit))
                 .skip((page - 1) * limit)
-                .sort();
+                .sort({ createdByDate: -1 });
 
             const total = await CategoriesSchema.countDocuments(req.query);
 
